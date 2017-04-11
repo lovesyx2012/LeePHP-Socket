@@ -44,6 +44,9 @@ class ApiList extends ControllerBase {
             $dr[$key]['items'] = $cmds[$key];
         }
 
-        $this->send($dr);
+        $this->send(["serverlist"=>[
+            "192.168.1.2",
+            "192.168.1.3"
+            ]]);
     }
 }

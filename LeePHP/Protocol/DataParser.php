@@ -14,23 +14,22 @@ class DataParser {
     /**
      * 构建标准输出数据结构。
      * 
-     * @param int $ci
-     * @param int $ct
+     * @param int $cmd
      * @param array $data
      * @param int $errno
      * @param string $errstr
      * @return string
      */
-    static function std($ci, $ct, $data, $errno = 0, $errstr = NULL){
+    static function std($cmd, $data=[], $errno = 0, $errstr = NULL){
         $d = array(
-            's'  => array(
-                'errno' => $errno,
-                'err'   => $errstr
-            ),
-            'm'  => $data,
-            'ci' => $ci,
-            'ct' => $ct
+            'errno' => $errno,
+            'errmsg'   => $errstr,
+            '_id' => $cmd
         );
+
+        if (!empty($data)) {
+            $d = array_merge($d,$data);
+        }
         
         return self::encode($d);
     }

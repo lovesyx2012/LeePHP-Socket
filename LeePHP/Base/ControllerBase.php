@@ -102,18 +102,17 @@ class ControllerBase extends Base implements IController {
      * 全服广播消息。
      * 
      * @param array|string $data    指定广播消息字符串或数组。
-     * @param int $ci               指定模块编号。
-     * @param int $ct               指定协议下行编号。
+     * @param int $cmd               指定模块编号。
      * @param boolean $contain_self 指示是否包含自己？(默认值: True)
      * @throws ArgumentException
      */
-    protected function broadcast($data, $ci = 0, $ct = 0, $contain_self = true) {
+    protected function broadcast($data, $cmd = 0, $contain_self = true) {
         if (!is_string($data)) {
             if (0 == $ci || 0 == $ct) {
                 throw new ArgumentException('必须指定 $ci, $ct 参数!', -1);
             }
 
-            $data_s = DataParser::std($ci, $ct, $data);
+            $data_s = DataParser::std($cmd, $data);
         } else {
             $data_s = &$data;
         }
@@ -137,16 +136,14 @@ class ControllerBase extends Base implements IController {
      * 发送数据给客户端。
      * 
      * @param array $data 指定数据集合。
-     * @param int $ci     指定模块编号。
-     * @param int $ct     指定协议下行编号。
+     * @param int $cmd     指定模块编号。
      */
-    protected function send($data, $ci = 0, $ct = 0) {
-        if (0 == $ci)
-            $ci = $this->cmd_data[2];
-        if (0 == $ct)
-            $ct = $this->cmd_data[3];
+    protected function send($data, $cmd = 0) {
+        if (0 == $cmd)
+            $cmd = $this->cmd_data[2];
+        
 
-        $this->serv->send($this->fd, DataParser::std($ci, $ct, $data));
+        $this->serv->send($this->fd, DataParser::std($cmd, $data));
     }
 
     /**
@@ -156,6 +153,6 @@ class ControllerBase extends Base implements IController {
      * @param string $errstr
      */
     protected function error($errno, $errstr) {
-        $this->serv->send($this->fd, DataParser::std($this->cmd_data[2], $this->cmd_data[3], NULL, $errno, $errstr));
+        $this->serv->send($this->fd, DataParser::std($this->cmd_data[2], NULL, $errno, $errstr));
     }
 }
