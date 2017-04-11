@@ -28,7 +28,7 @@ $g_conf = array(
         'open_cpu_affinity' => 1,
         'open_tcp_nodelay'  => 1,
         'open_eof_check'    => 1,
-        'data_eof'          => "\r\n",
+        'package_eof'       => "\r\n", 
         'log_file'          => '/tmp/leephp-socket.log'
     ),
     # [Owner]
