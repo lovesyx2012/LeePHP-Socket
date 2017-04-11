@@ -134,15 +134,15 @@ class AppServer extends ServerBase implements IProtocol {
 
         Console::debug('[OnReceive][Client IP: ', $client_info['remote_ip'], ', From: ', $client_info['from_port'], '] ', $data_s);
 
-        if (!isset($this->ctx->cmds[$data_s['cmd']])) {
-            Console::error('无效的命令编号(' . $data_s['cmd'] . ')。');
+        if (!isset($this->ctx->cmds[$data_s['_id']])) {
+            Console::error('无效的命令编号(' . $data_s['_id'] . ')。');
             return false;
         }
 
         // 实例化 IController 控制器对象并执行命令方法 ...
-        $cls_n = $this->ctx->getControllerNs() . '\\' . $this->ctx->cmds[$data_s['cmd']][0];
-        $cls_m = $this->ctx->cmds[$data_s['cmd']][1];
-        $cls_o = new $cls_n($this->ctx, $sw, $fd, $client_info, $this->ctx->cmds[$data_s['cmd']]);
+        $cls_n = $this->ctx->getControllerNs() . '\\' . $this->ctx->cmds[$data_s['_id']][0];
+        $cls_m = $this->ctx->cmds[$data_s['_id']][1];
+        $cls_o = new $cls_n($this->ctx, $sw, $fd, $client_info, $this->ctx->cmds[$data_s['_id']]);
 
         if ($cls_o instanceof IController) {
             $cls_o->initialize();
