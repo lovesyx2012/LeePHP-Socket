@@ -57,8 +57,8 @@ class DataParser {
     static function decode($data_str) {
         $len = strlen($data_str);
 
-        //$s = substr($data_str, 0, $len - 3);
-        $s = $data_str;
+        $s = substr($data_str, 0, $len - 3);
+
         $d = Encoder::decode($s, Encoder::JSON);
 
         return $d;
