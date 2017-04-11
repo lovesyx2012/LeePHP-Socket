@@ -17,19 +17,11 @@ $g_conf = array(
     # [Swoole]
     # ---------------------------------------------------------
     'swoole' => array(
-        'daemonize'         => 0,
-        'dispatch_mode'     => 2,
-        'timeout'           => 2.5,
-        'poll_thread_num'   => 4,
-        'writer_num'        => 2,
-        'worker_num'        => 4,
-        'task_worker_num'   => 1,
-        'backlog'           => 128,
-        'open_cpu_affinity' => 1,
-        'open_tcp_nodelay'  => 1,
-        'open_eof_check'    => 1,
-        'package_eof'       => "\r\n", 
-        'log_file'          => '/tmp/leephp-socket.log'
+        'daemonize' => false,
+        'worker_num' => 2,
+        'open_eof_check'    => true, 
+        'package_eof'       => "\r\n",
+        'log_file'          => '/tmp/swoole-socket.log'
     ),
     # [Owner]
     # ---------------------------------------------------------
