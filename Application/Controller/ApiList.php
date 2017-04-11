@@ -45,5 +45,6 @@ class ApiList extends ControllerBase {
         }
 
         $this->send($dr);
+        $this->send($dr);
     }
 }
