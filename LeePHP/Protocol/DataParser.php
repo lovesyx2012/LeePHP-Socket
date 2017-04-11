@@ -43,7 +43,7 @@ class DataParser {
     static function encode($data_out) {
         $s = Encoder::encode($data_out, Encoder::JSON);
         //$l = strlen($s);
-        return $s;
+        return $s."\r\n";
         //return pack('cNa*', false, $l, $s);
     }
 
