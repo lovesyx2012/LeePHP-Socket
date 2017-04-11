@@ -134,6 +134,13 @@ class AppServer extends ServerBase implements IProtocol {
 
         Console::debug('[OnReceive][Client IP: ', $client_info['remote_ip'], ', From: ', $client_info['from_port'], '] ', $data_s);
 
+        // 心跳检测
+        if ($data_s['_id'] == "hb") {
+            Console::debug('客户端心跳检测...');
+            return false;
+        }
+
+        // 命令编号合法性判断
         if (!isset($this->ctx->cmds[$data_s['_id']])) {
             Console::error('无效的命令编号(' . $data_s['_id'] . ')。');
             return false;
