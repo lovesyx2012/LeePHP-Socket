@@ -42,7 +42,7 @@ class DataParser {
      * @return string
      */
     static function encode($data_out) {
-        $s = Encoder::encode($data_out, Encoder::MSGPACK);
+        $s = Encoder::encode($data_out, Encoder::JSON);
         $l = strlen($s);
 
         return pack('cNa*', false, $l, $s);
@@ -58,7 +58,7 @@ class DataParser {
         $len = strlen($data_str);
 
         $s = substr($data_str, 0, $len - 3);
-        $d = Encoder::decode($s, Encoder::MSGPACK);
+        $d = Encoder::decode($s, Encoder::JSON);
 
         return $d;
     }
