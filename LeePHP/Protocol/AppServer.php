@@ -128,6 +128,8 @@ class AppServer extends ServerBase implements IProtocol {
         // 读取客户端来源信息 ...
         $client_info = $sw->connection_info($fd);
 
+        Console::debug('[ClientInfo] ', $client_info);
+
         //Console::debug('[接收数据] ', $data);
 
         Console::debug('[OnReceive][Client IP: ', $client_info['remote_ip'], ', From: ', $client_info['from_port'], '] ', $data);
