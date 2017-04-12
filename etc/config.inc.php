@@ -19,7 +19,8 @@ $g_conf = array(
     'swoole' => array(
         'daemonize' => false,
         'worker_num' => 2,
-        'open_eof_check'    => true, 
+        'open_eof_split' => true, 
+        //'open_eof_check'    => true, 
         'package_eof'       => "\r\n",
         'log_file'          => '/tmp/swoole-socket.log'
     ),

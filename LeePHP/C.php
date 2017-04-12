@@ -33,4 +33,7 @@ class C {
     const L_WARNING       = 3;
     /** 错误 */
     const L_ERROR         = 4;
+
+    // package_eof
+    CONST PACKAGE_EOF     = "\r\n";
 }

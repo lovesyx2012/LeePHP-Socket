@@ -2,6 +2,7 @@
 namespace LeePHP\Protocol;
 
 use LeePHP\Utility\Encoder;
+use LeePHP\C;
 
 /**
  * 客户端数据解析器。
@@ -43,7 +44,7 @@ class DataParser {
     static function encode($data_out) {
         $s = Encoder::encode($data_out, Encoder::JSON);
         //$l = strlen($s);
-        return $s."\r\n";
+        return $s.C::PACKAGE_EOF;
         //return pack('cNa*', false, $l, $s);
     }
 

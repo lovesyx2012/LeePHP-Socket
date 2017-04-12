@@ -7,6 +7,7 @@ use LeePHP\Interfaces\IController;
 use LeePHP\Interfaces\IAsyncTask;
 use LeePHP\Base\ServerBase;
 use LeePHP\Utility\Console;
+use LeePHP\C;
 
 /**
  * Socket 应用程序服务事件处理类。
@@ -127,14 +128,14 @@ class AppServer extends ServerBase implements IProtocol {
         // 读取客户端来源信息 ...
         $client_info = $sw->connection_info($fd);
 
-        Console::debug('[接收数据] ', $data);
+        //Console::debug('[接收数据] ', $data);
 
-        $data_arr = explode("\r\n", trim($data,"\r\n"));
+        Console::debug('[OnReceive][Client IP: ', $client_info['remote_ip'], ', From: ', $client_info['from_port'], '] ', $data);
+
+        $data_arr = explode(C::PACKAGE_EOF, trim($data,C::PACKAGE_EOF));
         foreach ($data_arr as $data) {
             // 解析客户端数据协议 ...
             $data_s = DataParser::decode($data);
-
-            Console::debug('[OnReceive][Client IP: ', $client_info['remote_ip'], ', From: ', $client_info['from_port'], '] ', $data_s);
 
             // 心跳检测
             if ($data_s['_id'] == "hb") {
