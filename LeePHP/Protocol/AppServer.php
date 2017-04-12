@@ -129,35 +129,38 @@ class AppServer extends ServerBase implements IProtocol {
 
         Console::debug('[接收数据] ', $data);
 
-        // 解析客户端数据协议 ...
-        $data_s = DataParser::decode($data);
+        $data_arr = explode("\r\n", trim($data,"\r\n"));
+        foreach ($data_arr as $data) {
+            // 解析客户端数据协议 ...
+            $data_s = DataParser::decode($data);
 
-        Console::debug('[OnReceive][Client IP: ', $client_info['remote_ip'], ', From: ', $client_info['from_port'], '] ', $data_s);
+            Console::debug('[OnReceive][Client IP: ', $client_info['remote_ip'], ', From: ', $client_info['from_port'], '] ', $data_s);
 
-        // 心跳检测
-        if ($data_s['_id'] == "hb") {
-            Console::debug('客户端心跳检测...');
-            return false;
+            // 心跳检测
+            if ($data_s['_id'] == "hb") {
+                Console::debug('[心跳检测] 客户端心跳检测...');
+                return false;
+            }
+
+            // 命令编号合法性判断
+            if (!isset($this->ctx->cmds[$data_s['_id']])) {
+                Console::error('无效的命令编号(' . $data_s['_id'] . ')。');
+                return false;
+            }
+
+            // 实例化 IController 控制器对象并执行命令方法 ...
+            $cls_n = $this->ctx->getControllerNs() . '\\' . $this->ctx->cmds[$data_s['_id']][0];
+            $cls_m = $this->ctx->cmds[$data_s['_id']][1];
+            $cls_o = new $cls_n($this->ctx, $sw, $fd, $client_info, $this->ctx->cmds[$data_s['_id']]);
+
+            if ($cls_o instanceof IController) {
+                $cls_o->initialize();
+                $cls_o->$cls_m($data_s);
+                $cls_o->dispose();
+            }
+
+            $cls_o = NULL;
         }
-
-        // 命令编号合法性判断
-        if (!isset($this->ctx->cmds[$data_s['_id']])) {
-            Console::error('无效的命令编号(' . $data_s['_id'] . ')。');
-            return false;
-        }
-
-        // 实例化 IController 控制器对象并执行命令方法 ...
-        $cls_n = $this->ctx->getControllerNs() . '\\' . $this->ctx->cmds[$data_s['_id']][0];
-        $cls_m = $this->ctx->cmds[$data_s['_id']][1];
-        $cls_o = new $cls_n($this->ctx, $sw, $fd, $client_info, $this->ctx->cmds[$data_s['_id']]);
-
-        if ($cls_o instanceof IController) {
-            $cls_o->initialize();
-            $cls_o->$cls_m($data_s);
-            $cls_o->dispose();
-        }
-
-        $cls_o = NULL;
     }
 
     /**
